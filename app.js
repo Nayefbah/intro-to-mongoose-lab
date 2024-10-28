@@ -3,6 +3,9 @@ dotenv.config()
 const mongoose = require('mongoose')
 
 const prompt = require('prompt-sync')()
+const username = prompt('What is your name? ')
+
+console.log(`Your name is ${username}`)
 const customer = require('./model/customer')
 // const username = prompt('What is your name? ')
 
@@ -16,7 +19,7 @@ const connect = async () => {
   console.log('Disconnected from MongoDB')
 }
 
-async function createCustomer() {
+const createCustomer = async () => {
   const name = prompt("Enter customer's name: ")
   const age = prompt("Enter customer's age: ")
   const Customer = new customer({ name, age })
@@ -25,7 +28,7 @@ async function createCustomer() {
   console.log(`Customer ${name} created successfully.`)
 }
 
-const vieCustomer = async () => {
+const viewCustomer = async () => {
   const Customers = await customer.find()
   console.log('\nCurrent customers:\n')
   Customers.forEach((Customer) => {
@@ -36,7 +39,7 @@ const vieCustomer = async () => {
 }
 
 const updateCustomer = async () => {
-  await viewCustomers()
+  await viewCustomer()
   const id = prompt('Enter the ID of the customer to update: ')
   const name = prompt("Enter customer's new name: ")
   const age = prompt("Enter customer's new age: ")
@@ -46,7 +49,7 @@ const updateCustomer = async () => {
 }
 
 const deleteCustomer = async () => {
-  await viewCustomers()
+  await viewCustomer()
   const id = prompt('Enter the ID of the customer to delete: ')
 
   await customer.findByIdAndDelete(id)
@@ -67,7 +70,7 @@ const runQueries = async () => {
     if (choice === `1`) {
       await createCustomer()
     } else if (choice === `2`) {
-      await vieCustomer()
+      await viewCustomer()
     } else if (choice === `3`) {
       await updateCustomer()
     } else if (choice === `4`) {
